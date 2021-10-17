@@ -8,6 +8,8 @@ import com.chess.engine.pieces.Pawn;
 import com.chess.engine.pieces.Piece;
 import com.chess.engine.pieces.Queen;
 import com.chess.engine.pieces.Rook;
+import com.chess.engine.player.BlackPlayer;
+import com.chess.engine.player.WhitePlayer;
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,13 +22,17 @@ public class Board {
   private final Collection<Piece> whitePieces;
   private final Collection<Piece> blackPieces;
 
+  private final WhitePlayer whitePlayer;
+  private final BlackPlayer blackPlayer;
+
   private Board(Builder builder) {
     this.gameBoard = createGameBoard(builder);
     this.whitePieces = calculateActivePieces(this.gameBoard, Alliance.WHITE);
     this.blackPieces = calculateActivePieces(this.gameBoard, Alliance.BLACK);
-
     final Collection<Move> whiteStandardLegalMoves = calculateLegalMoves(this.whitePieces);
     final Collection<Move> blackStandardLegalMoves = calculateLegalMoves(this.blackPieces);
+    this.whitePlayer = new WhitePlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
+    this.blackPlayer = new BlackPlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
   }
 
   @Override
@@ -129,6 +135,15 @@ public class Board {
 
     return builder.build();
   }
+
+  public Collection<Piece> getBlackPieces() {
+    return this.blackPieces;
+  }
+
+  public Collection<Piece> getWhitePieces() {
+    return this.whitePieces;
+  }
+
   // Builder Pattern
   public static class Builder {
     Map<Integer, Piece> boardConfig;

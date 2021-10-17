@@ -4,7 +4,6 @@ import com.chess.engine.Alliance;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
-import com.chess.engine.board.Move.AttackMove;
 import com.chess.engine.board.Move.MajorMove;
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ public class Pawn extends Piece{
   private final static int[] CANDIDATE_MOVE_COORDINATE = { 8, 16, 7, 9 };
 
   public Pawn(int piecePosition, Alliance pieceAlliance) {
-    super(piecePosition, pieceAlliance);
+    super(piecePosition, PieceType.PAWN, pieceAlliance);
   }
 
   @Override
