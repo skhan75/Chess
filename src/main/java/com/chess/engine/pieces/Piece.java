@@ -17,7 +17,7 @@ public abstract class Piece {
     this.isFirstMove = false;
   }
 
-  public abstract Collection<Move> calculatedLegalMoves(final Board board);
+  public abstract Collection<Move> calculateLegalMoves(final Board board);
 
   public Alliance getPieceAlliance(){
     return this.pieceAlliance;
@@ -29,5 +29,24 @@ public abstract class Piece {
 
   public int getPiecePosition() {
     return this.piecePosition;
+  }
+
+  public enum PieceType {
+    PAWN("P"),
+    KNIGHT("K"),
+    BISHOP("B"),
+    ROOK("R"),
+    QUEEN("Q"),
+    KING("K");
+
+    private String pieceName;
+    PieceType(final String pieceName) {
+      this.pieceName = pieceName;
+    }
+
+    @Override
+    public String toString() {
+      return this.pieceName;
+    }
   }
 }

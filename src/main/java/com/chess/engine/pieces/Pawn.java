@@ -6,6 +6,7 @@ import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.AttackMove;
 import com.chess.engine.board.Move.MajorMove;
+import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -18,7 +19,7 @@ public class Pawn extends Piece{
   }
 
   @Override
-  public Collection<Move> calculatedLegalMoves(Board board) {
+  public Collection<Move> calculateLegalMoves(Board board) {
     final List<Move> legalMoves = new ArrayList<>() ;
 
     for(final int currentCandidateOffset : CANDIDATE_MOVE_COORDINATE) {
@@ -63,6 +64,11 @@ public class Pawn extends Piece{
           }
       }
     }
-    return null;
+    return ImmutableList.copyOf(legalMoves);
+  }
+
+  @Override
+  public String toString() {
+    return PieceType.PAWN.toString();
   }
 }

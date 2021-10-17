@@ -22,7 +22,7 @@ public class Knight extends Piece {
   }
 
   @Override
-  public Collection<Move> calculatedLegalMoves(final Board board) {
+  public Collection<Move> calculateLegalMoves(final Board board) {
     final List<Move> legalMoves = new ArrayList<>();
 
     for(int currentCandidateOffset : CANDIDATE_MOVE_COORDINATES) {
@@ -52,6 +52,11 @@ public class Knight extends Piece {
     }
 
     return ImmutableList.copyOf(legalMoves);
+  }
+
+  @Override
+  public String toString() {
+    return PieceType.KNIGHT.toString();
   }
 
   private static boolean isFirstColumnExclusion(final int currentPosition,

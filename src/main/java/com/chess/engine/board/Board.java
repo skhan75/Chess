@@ -11,6 +11,7 @@ import com.chess.engine.pieces.Rook;
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +33,7 @@ public class Board {
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     for(int i=0; i<BoardUtils.NUM_TILES; i++) {
-      final String tileText = prettyPrint(this.gameBoard.get(i));
+      final String tileText = this.gameBoard.get(i).toString();
       sb.append(String.format("%3s", tileText));
       if((i+1) % BoardUtils.NUM_TILES_PER_ROW == 0)
         sb.append("\n");
@@ -51,7 +52,7 @@ public class Board {
   private Collection<Move> calculateLegalMoves(final  Collection<Piece> pieces) {
     final List<Move> legalMoves = new ArrayList<>();
     for(final Piece piece : pieces) {
-      legalMoves.addAll(piece.calculatedLegalMoves(this));
+      legalMoves.addAll(piece.calculateLegalMoves(this));
     }
     return ImmutableList.copyOf(legalMoves);
   }
@@ -105,22 +106,23 @@ public class Board {
     builder.setPiece(new Pawn(15, Alliance.BLACK));
 
     // White layout
-    builder.setPiece(new Rook(48, Alliance.WHITE));
-    builder.setPiece(new Knight(49, Alliance.WHITE));
-    builder.setPiece(new Bishop(50, Alliance.WHITE));
-    builder.setPiece(new Queen(51, Alliance.WHITE));
-    builder.setPiece(new King(52, Alliance.WHITE));
-    builder.setPiece(new Bishop(53, Alliance.WHITE));
-    builder.setPiece(new Knight(54, Alliance.WHITE));
-    builder.setPiece(new Rook(55, Alliance.WHITE));
-    builder.setPiece(new Pawn(56, Alliance.WHITE));
-    builder.setPiece(new Pawn(57, Alliance.WHITE));
-    builder.setPiece(new Pawn(58, Alliance.WHITE));
-    builder.setPiece(new Pawn(59, Alliance.WHITE));
-    builder.setPiece(new Pawn(60, Alliance.WHITE));
-    builder.setPiece(new Pawn(61, Alliance.WHITE));
-    builder.setPiece(new Pawn(62, Alliance.WHITE));
-    builder.setPiece(new Pawn(63, Alliance.WHITE));
+    builder.setPiece(new Pawn(48, Alliance.WHITE));
+    builder.setPiece(new Pawn(49, Alliance.WHITE));
+    builder.setPiece(new Pawn(50, Alliance.WHITE));
+    builder.setPiece(new Pawn(51, Alliance.WHITE));
+    builder.setPiece(new Pawn(52, Alliance.WHITE));
+    builder.setPiece(new Pawn(53, Alliance.WHITE));
+    builder.setPiece(new Pawn(54, Alliance.WHITE));
+    builder.setPiece(new Pawn(55, Alliance.WHITE));
+    builder.setPiece(new Rook(56, Alliance.WHITE));
+    builder.setPiece(new Knight(57, Alliance.WHITE));
+    builder.setPiece(new Bishop(58, Alliance.WHITE));
+    builder.setPiece(new Queen(59, Alliance.WHITE));
+    builder.setPiece(new King(60, Alliance.WHITE));
+    builder.setPiece(new Bishop(61, Alliance.WHITE));
+    builder.setPiece(new Knight(62, Alliance.WHITE));
+    builder.setPiece(new Rook(63, Alliance.WHITE));
+
 
     // White start with the move
     builder.setMoveMaker(Alliance.WHITE);
@@ -133,7 +135,7 @@ public class Board {
     Alliance nextMoveMaker;
 
     public Builder() {
-
+      this.boardConfig = new HashMap<>();
     }
 
     public Builder setPiece(final Piece piece) {

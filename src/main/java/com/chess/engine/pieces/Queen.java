@@ -21,19 +21,18 @@ public class Queen extends Piece{
   }
 
   @Override
-  public Collection<Move> calculatedLegalMoves(Board board) {
+  public Collection<Move> calculateLegalMoves(Board board) {
     final List<Move> legalMoves = new ArrayList<>();
 
     for(int candidateCoordinateOffset : CANDIDATE_MOVE_VECTOR_COORDINATES) {
       int candidateDestinationCoordinate = this.piecePosition;
 
       while(BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
-        candidateDestinationCoordinate += candidateCoordinateOffset;
-
         if(isFirstColumnExclusion(candidateDestinationCoordinate, candidateCoordinateOffset) ||
           isEightColumnExclusion(candidateDestinationCoordinate, candidateCoordinateOffset)) {
           break;
         }
+        candidateDestinationCoordinate += candidateCoordinateOffset;
         if(BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
           final Tile candidateDestinaionTile = board.getTile(candidateDestinationCoordinate);
           if (!candidateDestinaionTile.isTileOccupied()) {
@@ -53,6 +52,11 @@ public class Queen extends Piece{
     return ImmutableList.copyOf(legalMoves);
   }
 
+  @Override
+  public String toString() {
+    return PieceType.QUEEN.toString();
+  }
+
   private static boolean isFirstColumnExclusion(final int currentPosition,
     final int candidateOffset) {
     return BoardUtils.FIRST_COLUMN[currentPosition] && (candidateOffset == -1 ||
@@ -61,7 +65,7 @@ public class Queen extends Piece{
 
   private static boolean isEightColumnExclusion(final int currentPosition,
     final int candidateOffset) {
-    return BoardUtils.FIRST_COLUMN[currentPosition] && (candidateOffset == 1 ||
+    return BoardUtils.EIGHT_COLUMN[currentPosition] && (candidateOffset == 1 ||
       candidateOffset == -7 || candidateOffset == 9);
   }
 }
