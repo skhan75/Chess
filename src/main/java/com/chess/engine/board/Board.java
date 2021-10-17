@@ -19,14 +19,44 @@ public class Board {
   private final Collection<Piece> whitePieces;
   private final Collection<Piece> blackPieces;
 
-  private Board(Builder builder, Collection<Piece> whitePieces,
-    Collection<Piece> blackPieces) {
+  private Board(Builder builder) {
     this.gameBoard = createGameBoard(builder);
-    this.whitePieces = whitePieces;
-    this.blackPieces = blackPieces;
+    this.whitePieces = calculateActivePieces(this.gameBoard, Alliance.WHITE);
+    this.blackPieces = calculateActivePieces(this.gameBoard, Alliance.BLACK);
+
+    final Collection<Move> whiteStandardLegalMoves = calculateLegalMoves(this.whitePieces);
+    final Collection<Move> blackStandardLegalMoves = calculateLegalMoves(this.blackPieces);
   }
 
-  private Collection<Piece> calculateActivePieces(final List<Tile> gameBoard,
+  @Override
+  public String toString() {
+    final StringBuilder sb = new StringBuilder();
+    for(int i=0; i<BoardUtils.NUM_TILES; i++) {
+      final String tileText = prettyPrint(this.gameBoard.get(i));
+      sb.append(String.format("%3s", tileText));
+      if((i+1) % BoardUtils.NUM_TILES_PER_ROW == 0)
+        sb.append("\n");
+    }
+    return sb.toString();
+  }
+
+  private static String prettyPrint(final Tile tile) {
+    if(tile.isTileOccupied()) {
+      return tile.getPiece().getPieceAlliance().isBlack() ? tile.toString().toLowerCase()
+        : tile.toString();
+    }
+    return tile.toString();
+  }
+
+  private Collection<Move> calculateLegalMoves(final  Collection<Piece> pieces) {
+    final List<Move> legalMoves = new ArrayList<>();
+    for(final Piece piece : pieces) {
+      legalMoves.addAll(piece.calculatedLegalMoves(this));
+    }
+    return ImmutableList.copyOf(legalMoves);
+  }
+
+  private static Collection<Piece> calculateActivePieces(final List<Tile> gameBoard,
     final Alliance alliance) {
     final List<Piece> activePieces = new ArrayList<>();
 
@@ -117,7 +147,7 @@ public class Board {
     }
 
     public Board build() {
-      return new Board(this, whitePieces, blackPieces);
+      return new Board(this);
     }
   }
 }
