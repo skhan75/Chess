@@ -16,7 +16,7 @@ public class Pawn extends Piece{
   Pawn(int piecePosition, Alliance pieceAlliance) {
     super(piecePosition, pieceAlliance);
   }
-  
+
   @Override
   public Collection<Move> calculatedLegalMoves(Board board) {
     final List<Move> legalMoves = new ArrayList<>() ;
