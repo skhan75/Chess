@@ -11,6 +11,7 @@ public abstract class Piece {
   protected final PieceType pieceType;
   protected final Alliance pieceAlliance;
   protected final boolean isFirstMove;
+  private final int cachedHashCode;
 
   Piece(final int piecePosition, final PieceType pieceType,
     final Alliance pieceAlliance) {
@@ -19,6 +20,7 @@ public abstract class Piece {
     this.piecePosition = piecePosition;
     // TODO more work needed
     this.isFirstMove = false;
+    this.cachedHashCode = computeHashCode();
   }
 
   public Alliance getPieceAlliance(){
@@ -89,5 +91,30 @@ public abstract class Piece {
     }
 
     public abstract boolean isKing();
+  }
+
+  private int computeHashCode() {
+    int result = pieceType.hashCode();
+    result = 31 * result + pieceAlliance.hashCode();
+    result = 31 * result + piecePosition;
+    result = 31 * result + (isFirstMove ? 1 : 0);
+    return result;
+  }
+
+  @Override
+  public boolean equals(final Object other) {
+    if(this == other)
+      return true;
+    if(!(other instanceof Piece))
+      return false;
+    final Piece otherPiece = (Piece) other;
+
+    return piecePosition == otherPiece.getPiecePosition() && pieceType == otherPiece.getPieceType() &&
+      pieceAlliance == otherPiece.getPieceAlliance() && isFirstMove == otherPiece.isFirstMove;
+  }
+
+  @Override
+  public int hashCode() {
+    return this.cachedHashCode;
   }
 }

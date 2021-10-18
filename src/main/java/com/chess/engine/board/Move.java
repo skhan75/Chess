@@ -40,9 +40,9 @@ public abstract class Move {
         }
       }
       // set opponent pieces as it is
-      for(final Piece piece : this.board.currentPlayer().getOpponent().getActivePieces()) {
+      for(final Piece piece : this.board.currentPlayer().getOpponent().getActivePieces())
         builder.setPiece(piece);
-      }
+
       // move the moved piece
       builder.setPiece(this.movedPiece.movePiece(this));
       // now change the current move maker to opponent
