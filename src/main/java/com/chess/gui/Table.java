@@ -1,5 +1,6 @@
 package com.chess.gui;
 
+import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -8,9 +9,15 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -20,22 +27,27 @@ public class Table {
 
   private final JFrame gameFrame;
   private final BoardPanel boardPanel;
+  private final Board chessBoard;
 
-  private static Dimension OUTER_FRAME_DIMENSION = new Dimension(600, 600);
+  private static final Dimension OUTER_FRAME_DIMENSION = new Dimension(600, 600);
   private static final Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
   private static final Dimension TILE_PANEL_DIMENSION =  new Dimension(10, 10);
-  private Color lightTileColor = Color.decode("#FFFACD");
-  private Color darkTileColor = Color.decode("#593E1A");
+  private static final String defaultPieceImagesPath = "art/pieces/plain/";
+
+  private final Color lightTileColor = Color.decode("#FFFACD");
+  private final Color darkTileColor = Color.decode("#593E1A");
 
   public Table() {
-    this.boardPanel = new BoardPanel();
     this.gameFrame = new JFrame("Simple Chess");
     this.gameFrame.setLayout(new BorderLayout());
-    this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
     final JMenuBar tableMenuBar = createTableMenuBar();
     this.gameFrame.setJMenuBar(tableMenuBar);
     this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
+    this.chessBoard = Board.createStandardBoard();
+    this.boardPanel = new BoardPanel();
+    this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
     this.gameFrame.setVisible(true);
+
   }
 
   private JMenuBar createTableMenuBar() {
@@ -83,7 +95,6 @@ public class Table {
       setPreferredSize(BOARD_PANEL_DIMENSION);
       validate();
     }
-
   }
 
   /* Represents Each Tile */
@@ -95,15 +106,33 @@ public class Table {
       this.tileId = tileId;
       setPreferredSize(TILE_PANEL_DIMENSION);
       assignTileColor();
+      assignTilePieceIcon(chessBoard);
       validate();
     }
 
+    private void assignTilePieceIcon(final Board board) {
+      this.removeAll();
+      if(board.getTile(this.tileId).isTileOccupied()) {
+        try {
+          final BufferedImage image =
+            ImageIO.read(new File(
+              defaultPieceImagesPath +
+                board.getTile(this.tileId).getPiece().getPieceAlliance().toString().substring(0,1) +
+                board.getTile(this.tileId).getPiece().toString() + ".gif"
+            ));
+          add(new JLabel(new ImageIcon(image)));
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+
     private void assignTileColor() {
-      if(BoardUtils.FIRST_ROW[this.tileId] || BoardUtils.THIRD_ROW[this.tileId] ||
-        BoardUtils.FIFTH_ROW[this.tileId] || BoardUtils.SEVENTH_ROW[this.tileId]) {
+      if(BoardUtils.EIGHT_RANK[this.tileId] || BoardUtils.SIXTH_RANK[this.tileId] ||
+        BoardUtils.FOURTH_RANK[this.tileId] || BoardUtils.SECOND_RANK[this.tileId]) {
         setBackground(this.tileId % 2 == 0 ? lightTileColor : darkTileColor);
-      } else if(BoardUtils.SECOND_ROW[this.tileId] || BoardUtils.FOURTH_ROW[this.tileId] ||
-        BoardUtils.SIXTH_ROW[this.tileId] || BoardUtils.EIGHT_ROW[this.tileId]) {
+      } else if(BoardUtils.SEVENTH_RANK[this.tileId] || BoardUtils.FIFTH_RANK[this.tileId] ||
+        BoardUtils.THIRD_RANK[this.tileId] || BoardUtils.FIRST_RANK[this.tileId]) {
         setBackground(this.tileId % 2 != 0 ? lightTileColor : darkTileColor);
       }
     }
