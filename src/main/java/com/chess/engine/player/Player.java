@@ -30,7 +30,7 @@ public abstract class Player {
     Checks if destination coordinates of enemy moves is equal to current King's position
     @Returns Collection of moves that attacks the king
   */
-  private static Collection<Move> calculateAttacksOnTile(int piecePosition,
+  protected static Collection<Move> calculateAttacksOnTile(int piecePosition,
     Collection<Move> opponentMoves) {
     final List<Move> attackMoves = new ArrayList<>();
 
@@ -120,4 +120,6 @@ public abstract class Player {
   public abstract Collection<Piece> getActivePieces();
   public abstract Alliance getAlliance();
   public abstract Player getOpponent();
+  protected abstract Collection<Move> calculateKingCastles(Collection<Move> playerLegals,
+    Collection<Move> opponentsLegals);
 }
