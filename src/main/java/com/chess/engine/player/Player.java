@@ -89,7 +89,7 @@ public abstract class Player {
     return this.playerKing;
   }
 
-  private Collection<Move> getLegalMoves() {
+  public Collection<Move> getLegalMoves() {
     return this.legalMoves;
   }
 

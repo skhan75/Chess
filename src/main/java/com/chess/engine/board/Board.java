@@ -12,6 +12,7 @@ import com.chess.engine.player.BlackPlayer;
 import com.chess.engine.player.Player;
 import com.chess.engine.player.WhitePlayer;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -132,7 +133,6 @@ public class Board {
     builder.setPiece(new Knight(62, Alliance.WHITE));
     builder.setPiece(new Rook(63, Alliance.WHITE));
 
-
     // White start with the move
     builder.setMoveMaker(Alliance.WHITE);
 
@@ -157,6 +157,11 @@ public class Board {
 
   public Player currentPlayer() {
     return this.currentPlayer;
+  }
+
+  public Iterable<Move> getAllLegalMoves() {
+    return Iterables.unmodifiableIterable(Iterables.concat(this.whitePlayer.getLegalMoves(),
+      this.blackPlayer.getLegalMoves()));
   }
 
   // Builder Pattern
