@@ -52,6 +52,12 @@ public class Bishop extends Piece {
     return ImmutableList.copyOf(legalMoves);
   }
 
+  // TODO Precompute Bishop's possible move positions and do a lookup
+  @Override
+  public Bishop movePiece(Move move) {
+    return new Bishop(move.getDestinationCoordinate(), move.getMovedPiece().getPieceAlliance());
+  }
+
   @Override
   public String toString() {
     return PieceType.BISHOP.toString();
