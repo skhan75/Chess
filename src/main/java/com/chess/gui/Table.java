@@ -2,6 +2,7 @@ package com.chess.gui;
 
 import com.chess.engine.board.BoardUtils;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -23,6 +24,8 @@ public class Table {
   private static Dimension OUTER_FRAME_DIMENSION = new Dimension(600, 600);
   private static final Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
   private static final Dimension TILE_PANEL_DIMENSION =  new Dimension(10, 10);
+  private Color lightTileColor = Color.decode("#FFFACD");
+  private Color darkTileColor = Color.decode("#593E1A");
 
   public Table() {
     this.boardPanel = new BoardPanel();
@@ -85,9 +88,17 @@ public class Table {
       assignTileColor();
       validate();
     }
+
+    private void assignTileColor() {
+      if(BoardUtils.FIRST_ROW[this.tileId] || BoardUtils.THIRD_ROW[this.tileId] ||
+        BoardUtils.FIFTH_ROW[this.tileId] || BoardUtils.SEVENTH_ROW[this.tileId]) {
+        setBackground(this.tileId % 2 == 0 ? lightTileColor : darkTileColor);
+      } else if(BoardUtils.SECOND_ROW[this.tileId] || BoardUtils.FOURTH_ROW[this.tileId] ||
+        BoardUtils.SIXTH_ROW[this.tileId] || BoardUtils.EIGHT_ROW[this.tileId]) {
+        setBackground(this.tileId % 2 != 0 ? lightTileColor : darkTileColor);
+      }
+    }
   }
 
-  private void assignTileColor() {
 
-  }
 }
