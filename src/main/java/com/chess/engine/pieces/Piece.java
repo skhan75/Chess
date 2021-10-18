@@ -121,7 +121,6 @@ public abstract class Piece {
     }
 
     public abstract boolean isKing();
-
     public abstract boolean isRook();
   }
 
